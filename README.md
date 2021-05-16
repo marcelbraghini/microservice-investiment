@@ -51,6 +51,8 @@ Guide: https://quarkus.io/guides/rest-json
 
 # Mongodb
 
+database: investiment
+
 Collection: walletBase
 
 ```
@@ -89,4 +91,15 @@ Collection: wallet
 }
 ```
 
+# Integrations
 
+- BrasilBitcoin
+
+# JaCoCo plugin
+
+```shell script
+./mvnw package
+```
+
+- To see the code coverage using the jacoco you can access it through your html
+/target/site/jacoco/index.html

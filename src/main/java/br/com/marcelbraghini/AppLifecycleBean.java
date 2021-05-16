@@ -13,11 +13,11 @@ public class AppLifecycleBean {
 
     private final Logger log = LoggerFactory.getLogger(AppLifecycleBean.class);
 
-    void onStart(@Observes StartupEvent event) {
+    public void onStart(@Observes StartupEvent event) {
         log.info("The application is starting...");
     }
 
-    void onStop(@Observes ShutdownEvent event) {
+    public void onStop(@Observes ShutdownEvent event) {
         log.info("The application is stopping...");
     }
 

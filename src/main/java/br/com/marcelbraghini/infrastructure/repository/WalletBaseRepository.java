@@ -18,4 +18,5 @@ public class WalletBaseRepository implements PanacheMongoRepository<WalletBase> 
     public List<Type> getAllTypes() {
         return findAll().list().stream().map(WalletBase::getType).collect(Collectors.toList());
     }
+
 }

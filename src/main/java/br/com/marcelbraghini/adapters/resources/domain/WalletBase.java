@@ -1,14 +1,11 @@
-package br.com.marcelbraghini.entities;
+package br.com.marcelbraghini.adapters.resources.domain;
 
 import io.quarkus.mongodb.panache.MongoEntity;
-import org.bson.types.ObjectId;
 
 import java.math.BigDecimal;
 
 @MongoEntity(collection = "walletBase")
 public class WalletBase {
-
-    public ObjectId id;
 
     private Type type;
 
@@ -23,14 +20,6 @@ public class WalletBase {
         this.type = type;
         this.coinAcronym = coinAcronym;
         this.quantity = quantity;
-    }
-
-    public ObjectId getId() {
-        return id;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
     }
 
     public Type getType() {
@@ -55,5 +44,37 @@ public class WalletBase {
 
     public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
+    }
+
+    public static class Builder {
+
+        private Type type;
+
+        private CoinAcronym coinAcronym;
+
+        private BigDecimal quantity;
+
+        public WalletBase.Builder withType(final Type type) {
+            this.type = type;
+            return this;
+        }
+
+        public WalletBase.Builder withCoinAcronym(final CoinAcronym coinAcronym) {
+            this.coinAcronym = coinAcronym;
+            return this;
+        }
+
+        public WalletBase.Builder withQuantity(final BigDecimal quantity) {
+            this.quantity = quantity;
+            return this;
+        }
+
+        public WalletBase build() {
+            WalletBase walletBase = new WalletBase();
+            walletBase.type = this.type;
+            walletBase.coinAcronym = this.coinAcronym;
+            walletBase.quantity = this.quantity;
+            return walletBase;
+        }
     }
 }
