@@ -14,6 +14,6 @@ public interface GetCryptoPrice {
 
     @GET
     @Path("/prices/{coinAcronym}")
-    Coin getBitCoinPrice(@PathParam CoinAcronym coinAcronym);
+    Coin getCryptoPrice(@PathParam CoinAcronym coinAcronym);
 
 }

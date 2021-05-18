@@ -28,7 +28,7 @@ public class WalletResource {
     private final Logger log = LoggerFactory.getLogger(WalletResource.class);
 
     @Inject
-    private WalletRepository walletRepository;
+    WalletRepository walletRepository;
 
     @GET
     public Response getWallets() {
@@ -46,17 +46,15 @@ public class WalletResource {
     private List<Wallet> generateResponse(final List<br.com.marcelbraghini.entities.Wallet> wallets) {
         List<Wallet> newWallets = new ArrayList<>();
 
-        wallets.stream().forEach(wallet -> {
+        wallets.forEach(wallet -> {
             List<Coin> coins = new ArrayList<>();
 
-            wallet.getCoins().stream().forEach(coin -> {
-                coins.add(new Coin.Builder()
-                        .withCoinAcronym(CoinAcronym.valueOf(coin.getCoinAcronym().toString()))
-                        .withPrice(coin.getPrice())
-                        .withFraction(coin.getFraction())
-                        .withTotalValue(coin.getTotalValue())
-                        .build());
-            });
+            wallet.getCoins().forEach(coin -> coins.add(new Coin.Builder()
+                    .withCoinAcronym(CoinAcronym.valueOf(coin.getCoinAcronym().toString()))
+                    .withPrice(coin.getPrice())
+                    .withFraction(coin.getFraction())
+                    .withTotalValue(coin.getTotalValue())
+                    .build()));
 
             newWallets.add(new Wallet.Builder()
                     .withType(Type.valueOf(wallet.getType().toString()))

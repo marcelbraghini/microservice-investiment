@@ -25,7 +25,7 @@ public class WalletBaseResource {
     private final Logger log = LoggerFactory.getLogger(WalletBaseResource.class);
 
     @Inject
-    private WalletBaseRepository walletBaseRepository;
+    WalletBaseRepository walletBaseRepository;
 
     @GET
     public Response getWalletBases() {
@@ -76,7 +76,7 @@ public class WalletBaseResource {
     private List<WalletBase> convertWalletBaseToResponse(final List<br.com.marcelbraghini.entities.WalletBase> walletBases) {
         List<WalletBase> newWallets = new ArrayList<>();
 
-        walletBases.stream().forEach(walletBase -> newWallets.add(new WalletBase.Builder()
+        walletBases.forEach(walletBase -> newWallets.add(new WalletBase.Builder()
                 .withType(Type.valueOf(walletBase.getType().toString()))
                 .withCoinAcronym(br.com.marcelbraghini.adapters.resources.domain.CoinAcronym.valueOf(walletBase.getCoinAcronym().toString()))
                 .withQuantity(walletBase.getQuantity())

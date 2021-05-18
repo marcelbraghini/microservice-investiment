@@ -4,6 +4,7 @@ import br.com.marcelbraghini.entities.Coin;
 import br.com.marcelbraghini.entities.Type;
 import br.com.marcelbraghini.entities.Wallet;
 import br.com.marcelbraghini.entities.WalletBase;
+import br.com.marcelbraghini.entities.exception.CryptoPriceException;
 import br.com.marcelbraghini.infrastructure.brasilbitcoin.GetCryptoPrice;
 import br.com.marcelbraghini.infrastructure.repository.WalletBaseRepository;
 import br.com.marcelbraghini.infrastructure.repository.WalletRepository;
@@ -45,11 +46,7 @@ public class GenerateCoinQueryUsecase implements GenerateCoinQueryGateway {
 
             walletRepository.persistOrUpdate(wallet);
         } else {
-            final Wallet newWallet = new Wallet.Builder()
-                                                .withType(type)
-                                                .withTotalValue(totalValueSum(coins))
-                                                .withCoins(coins)
-                                                .build();
+            final Wallet newWallet = convertWalets(type, coins);
 
             walletRepository.persist(newWallet);
         }
@@ -69,23 +66,40 @@ public class GenerateCoinQueryUsecase implements GenerateCoinQueryGateway {
     private List<Coin> updateWalletPrices(final List<WalletBase> walletsBase) {
         List<Coin> coins = new ArrayList<>();
 
-        walletsBase.stream().forEach(wallet -> {
-            final br.com.marcelbraghini.infrastructure.brasilbitcoin.domain.Coin coin =
-                    getCryptoPrice.getBitCoinPrice(wallet.getCoinAcronym());
+        walletsBase.forEach(wallet -> {
+            final br.com.marcelbraghini.infrastructure.brasilbitcoin.domain.Coin coin = getCoinPrice(wallet);
 
             final BigDecimal valueTotal = new BigDecimal(coin.getSell()).multiply(wallet.getQuantity())
                     .setScale(2, RoundingMode.HALF_EVEN);
 
-            final Coin newCoin = new Coin.Builder()
-                                            .withPrice(new BigDecimal(coin.getSell()))
-                                            .withFraction(wallet.getQuantity())
-                                            .withCoinAcronym(wallet.getCoinAcronym())
-                                            .withTotalValue(valueTotal)
-                                            .build();
-
-            coins.add(newCoin);
+            coins.add(convertCoins(wallet, coin, valueTotal));
         });
 
         return coins;
+    }
+
+    private Wallet convertWalets(final Type type, final List<Coin> coins) {
+        return new Wallet.Builder().withType(type)
+                                    .withTotalValue(totalValueSum(coins))
+                                    .withCoins(coins)
+                                    .build();
+    }
+
+    private Coin convertCoins(final WalletBase wallet,
+                              final br.com.marcelbraghini.infrastructure.brasilbitcoin.domain.Coin coin,
+                              final BigDecimal valueTotal) {
+        return new Coin.Builder().withPrice(new BigDecimal(coin.getSell()))
+                                    .withFraction(wallet.getQuantity())
+                                    .withCoinAcronym(wallet.getCoinAcronym())
+                                    .withTotalValue(valueTotal)
+                                    .build();
+    }
+
+    private br.com.marcelbraghini.infrastructure.brasilbitcoin.domain.Coin getCoinPrice(final WalletBase wallet) {
+        try {
+            return getCryptoPrice.getCryptoPrice(wallet.getCoinAcronym());
+        } catch (final Exception e) {
+            throw new CryptoPriceException(e.getMessage(), e);
+        }
     }
 }

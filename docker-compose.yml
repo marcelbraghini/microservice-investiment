@@ -17,6 +17,21 @@ services:
       test: "exit 0"
     networks:
       - private
+  rabbitmq1:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - /private/tmp/docker/volumes/rabbitmq:/data/rabbit
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    networks:
+      - private
 networks:
   private:
     driver: bridge
