@@ -25,17 +25,15 @@ public class WalletBaseResource {
     private final Logger log = LoggerFactory.getLogger(WalletBaseResource.class);
 
     @Inject
-    private WalletBaseRepository walletBaseRepository;
+    WalletBaseRepository walletBaseRepository;
 
     @GET
     public Response getWalletBases() {
         try {
             final List<WalletBase> walletBases = convertWalletBaseToResponse(walletBaseRepository.findAllWalletsBase());
-
             return Response.status(Response.Status.OK).entity(walletBases).build();
         } catch (final Exception e) {
             log.error(format("[WalletResource:getWalletBase] Exception %s", e.getMessage()));
-
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
@@ -44,11 +42,9 @@ public class WalletBaseResource {
     public Response saveWalletBase(final WalletBase walletBase) {
         try {
             walletBaseRepository.persist(convertWalletBaseToSave(walletBase));
-
             return Response.status(Response.Status.CREATED).entity(walletBase).build();
         } catch (final Exception e) {
             log.error(format("[WalletResource:saveWalletBase] Exception %s", e.getMessage()));
-
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
@@ -64,7 +60,6 @@ public class WalletBaseResource {
             walletSaved.setCoinAcronym(CoinAcronym.valueOf(walletBase.getCoinAcronym().toString()));
 
             walletBaseRepository.update(walletSaved);
-
             return Response.status(Response.Status.OK).entity(walletBase).build();
         } catch (final Exception e) {
             log.error(format("[WalletResource:updateWalletBase] Exception %s", e.getMessage()));
@@ -76,7 +71,7 @@ public class WalletBaseResource {
     private List<WalletBase> convertWalletBaseToResponse(final List<br.com.marcelbraghini.entities.WalletBase> walletBases) {
         List<WalletBase> newWallets = new ArrayList<>();
 
-        walletBases.stream().forEach(walletBase -> newWallets.add(new WalletBase.Builder()
+        walletBases.forEach(walletBase -> newWallets.add(new WalletBase.Builder()
                 .withType(Type.valueOf(walletBase.getType().toString()))
                 .withCoinAcronym(br.com.marcelbraghini.adapters.resources.domain.CoinAcronym.valueOf(walletBase.getCoinAcronym().toString()))
                 .withQuantity(walletBase.getQuantity())

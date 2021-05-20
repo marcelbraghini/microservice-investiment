@@ -56,7 +56,7 @@ public class GenerateCoinQueryUsecaseTest {
         coin.setSell("300.00");
 
         when(walletBaseRepository.findAllWalletsBase()).thenReturn(walletBases);
-        when(getCryptoPrice.getBitCoinPrice(CoinAcronym.BTC)).thenReturn(coin);
+        when(getCryptoPrice.getCryptoPrice(CoinAcronym.BTC)).thenReturn(coin);
         when(walletRepository.findByType(Type.CRYPTOCURRENCY)).thenReturn(wallet);
 
         generateCoinQueryUsecase.generateCoinQuery(Type.CRYPTOCURRENCY);
@@ -83,7 +83,7 @@ public class GenerateCoinQueryUsecaseTest {
         coin.setSell("300.00");
 
         when(walletBaseRepository.findAllWalletsBase()).thenReturn(walletBases);
-        when(getCryptoPrice.getBitCoinPrice(CoinAcronym.BTC)).thenReturn(coin);
+        when(getCryptoPrice.getCryptoPrice(CoinAcronym.BTC)).thenReturn(coin);
         when(walletRepository.findByType(Type.CRYPTOCURRENCY)).thenReturn(wallet);
 
         generateCoinQueryUsecase.generateCoinQuery(Type.CRYPTOCURRENCY);

@@ -8,5 +8,7 @@ public interface GenerateCoinQueryGateway {
 
     void generateCoinQuery(final Type type);
 
+    void prepareDisplayMessage();
+
     List<Type> findAllType();
 }

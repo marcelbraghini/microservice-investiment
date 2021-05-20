@@ -20,12 +20,6 @@ public class Wallet {
     public Wallet() {
     }
 
-//    public Wallet(List<Coin> coins, BigDecimal totalValue, Type type) {
-//        this.coins = coins;
-//        this.totalValue = totalValue;
-//        this.type = type;
-//    }
-
     public ObjectId getId() {
         return id;
     }
